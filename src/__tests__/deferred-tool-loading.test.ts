@@ -128,6 +128,48 @@ describe("deferred tool loading — query options", () => {
 
     expect(capturedQueryParams.options.env.ENABLE_TOOL_SEARCH).toBe("false")
   })
+
+  it("forces ENABLE_TOOL_SEARCH=true via MERIDIAN_FORCE_TOOL_SEARCH without deferred tools", async () => {
+    process.env.MERIDIAN_FORCE_TOOL_SEARCH = "1"
+    try {
+      mockMessages = [assistantMessage([{ type: "text", text: "Hello" }])]
+
+      await app().fetch(new Request("http://localhost/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(makeRequest({
+          stream: false,
+          tools: [ALWAYS_LOADED_TOOL],
+          messages: [{ role: "user", content: "Read a file" }],
+        })),
+      }))
+
+      expect(capturedQueryParams.options.env.ENABLE_TOOL_SEARCH).toBe("true")
+    } finally {
+      delete process.env.MERIDIAN_FORCE_TOOL_SEARCH
+    }
+  })
+
+  it("honors the legacy CLAUDE_PROXY_FORCE_TOOL_SEARCH alias", async () => {
+    process.env.CLAUDE_PROXY_FORCE_TOOL_SEARCH = "true"
+    try {
+      mockMessages = [assistantMessage([{ type: "text", text: "Hello" }])]
+
+      await app().fetch(new Request("http://localhost/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(makeRequest({
+          stream: false,
+          tools: [ALWAYS_LOADED_TOOL],
+          messages: [{ role: "user", content: "Read a file" }],
+        })),
+      }))
+
+      expect(capturedQueryParams.options.env.ENABLE_TOOL_SEARCH).toBe("true")
+    } finally {
+      delete process.env.CLAUDE_PROXY_FORCE_TOOL_SEARCH
+    }
+  })
 })
 
 describe("deferred tool loading — ToolSearch filtering", () => {

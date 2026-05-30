@@ -666,6 +666,7 @@ ANTHROPIC_API_KEY=your-secret-key ANTHROPIC_BASE_URL=http://meridian-host:3456 o
 | `MERIDIAN_DEFAULT_AGENT` | — | `opencode` | Default adapter for unrecognized agents: `opencode`, `forgecode`, `pi`, `crush`, `droid`, `passthrough`. Requires restart. |
 | `MERIDIAN_PROFILES` | — | unset | JSON array of profile configs (overrides disk discovery). See [Multi-Profile Support](#multi-profile-support). |
 | `MERIDIAN_DEFER_TOOL_THRESHOLD` | — | `15` | Number of tools before non-core tools are deferred via ToolSearch. Set to `0` to disable. |
+| `MERIDIAN_FORCE_TOOL_SEARCH` | `CLAUDE_PROXY_FORCE_TOOL_SEARCH` | unset | Force deferred tool loading on (`ENABLE_TOOL_SEARCH=true`) regardless of the auto-defer heuristic. Useful when many MCP tools are connected on the non-passthrough path. |
 | `MERIDIAN_TELEMETRY_PERSIST` | — | unset | Enable SQLite telemetry persistence. Data survives proxy restarts. |
 | `MERIDIAN_TELEMETRY_DB` | — | `~/.config/meridian/telemetry.db` | SQLite database path (when persistence is enabled) |
 | `MERIDIAN_TELEMETRY_RETENTION_DAYS` | — | `7` | Days to retain telemetry data before cleanup |
